@@ -192,15 +192,16 @@ pnpm setup        # Complete setup (install + db:push + db:seed)
 
 ## User complaints, please investigate in order
 
-Computing the count is slow
-Search feels laggy when typing - users report the page is unresponsive while searching (focus only on frontend part)
-Shopping cart page feels sluggish when updating item quantities
-Product listing page is slow to fully load - users see a long delay before all product information appears
-Even once some products load, the images are not loading for a while. 
-CSV export causes browser to hang for 10+ seconds with our full catalog
-Even after search improvement to the frontend, search is still slow. 
+- Computing the count is slow
+- Search feels laggy when typing - users report the page is unresponsive while searching (focus only on frontend part)
+- Shopping cart page feels sluggish when updating item quantities
+- Product listing page is slow to fully load - users see a long delay before all product information appears
+- Even once some products load, the images are not loading for a while. 
+- CSV export causes browser to hang for 10+ seconds with our full catalog
+- Even after search improvement to the frontend, search is still slow. 
 
-With 10 minutes left, we'll work on a design question:
+*With 10 minutes left, we'll work on a design question:*
+
 We need to allow admins to update prices for thousands of products at once by uploading a CSV file. The CSV contains product IDs and new prices, and we expect files with 20k-50k rows regularly. Design an API endpoint (or set of endpoints) to handle this feature, considering our current tech stack and the scale of updates.
 
 ## 📚 Resources
