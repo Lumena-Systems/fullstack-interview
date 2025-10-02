@@ -1,0 +1,14 @@
+# Frontend Interview Project Rules
+
+## Project Context
+This is a Next.js e-commerce application with intentional bugs and performance issues for technical interviews.
+
+## Important Notes
+- DO NOT fix the intentional bugs - they are teaching examples
+- Maintain production-quality code except for the documented bugs
+- Use TypeScript strict mode
+- Follow Next.js 14 App Router patterns
+- Use React Query for data fetching
+- Use Prisma for database operations
+
+

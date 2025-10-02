@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String
+  createdAt DateTime   @default(now())
+  cartItems CartItem[]
+  orders    Order[]
+}
+
+model Product {
+  id          String             @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  inventory   Int
+  imageUrl    String
+  brandId     String
+  categoryId  String
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  brand       Brand              @relation(fields: [brandId], references: [id])
+  category    Category           @relation(fields: [categoryId], references: [id])
+  attributes  ProductAttribute[]
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  reviews     ProductReview[]
+
+  @@index([brandId])
+  @@index([categoryId])
+  @@index([name])
+}
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  productId String
+  rating    Int
+  title     String
+  content   String
+  author    String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model Brand {
+  id         String    @id @default(cuid())
+  name       String    @unique
+  supplierId String
+  products   Product[]
+  supplier   Supplier  @relation(fields: [supplierId], references: [id])
+
+  @@index([supplierId])
+}
+
+model Supplier {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  country     String
+  description String
+  brands      Brand[]
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  products Product[]
+}
+
+model ProductAttribute {
+  id        String  @id @default(cuid())
+  productId String
+  key       String
+  value     String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([key])
+  @@index([value])
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  quantity  Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  userId    String
+  total     Float
+  status    String
+  createdAt DateTime    @default(now())
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+}
+
+
