@@ -72,8 +72,7 @@ app/
 │   ├── cart/            # Shopping cart endpoints
 │   └── shipping-estimate/  # Shipping estimate endpoint
 ├── products/            # Product pages
-│   ├── page.tsx        # Product catalog with filters
-│   └── [id]/page.tsx   # Product detail page
+│   └── page.tsx        # Product catalog with filters
 ├── cart/                # Shopping cart page
 └── layout.tsx           # Root layout
 
@@ -141,7 +140,6 @@ prisma/
 - Browse 200,000 products with pagination (50 per page)
 - Search products by name
 - Filter by category and brand
-- View product details
 - Add products to cart
 - Export products to CSV
 
@@ -150,13 +148,6 @@ prisma/
 - Update quantities
 - Remove items
 - See subtotal, tax, and total
-
-### Product Details
-- Full product information
-- Image gallery
-- Product attributes (color, size, material, etc.)
-- Stock availability
-- Add to cart with quantity selector
 
 ## 🔧 Available Scripts
 
