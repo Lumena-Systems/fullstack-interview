@@ -23,28 +23,7 @@ interface CartItemProps {
 }
 
 function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
-  const [shippingEstimate, setShippingEstimate] = useState<number | null>(null);
-  const [isLoadingShipping, setIsLoadingShipping] = useState(true);
   const recommendations = getRecommendations(item.product);
-
-  useEffect(() => {
-    setIsLoadingShipping(true);
-    fetch(`/api/shipping-estimate/${item.product.id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        setShippingEstimate(data.days);
-        setIsLoadingShipping(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching shipping estimate:', error);
-        setIsLoadingShipping(false);
-      });
-  }, [item.product.id]);
-
-  // Don't render the item until shipping estimate is loaded
-  if (isLoadingShipping) {
-    return null;
-  }
 
   return (
     <div className="border rounded-lg p-4 mb-3 bg-white">
@@ -62,10 +41,6 @@ function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
           <h3 className="font-semibold">{item.product.name}</h3>
           <p className="text-sm text-gray-600">{item.product.brand.name}</p>
           <p className="text-lg font-bold mt-1">{formatPrice(item.product.price)}</p>
-          
-          {shippingEstimate !== null && (
-            <p className="text-xs text-gray-600 mt-1">Ships in {shippingEstimate} days</p>
-          )}
 
           <div className="mt-2 text-sm text-gray-500">
             <span className="font-medium">You might also like:</span> {recommendations.join(', ')}
@@ -110,12 +85,12 @@ export default CartItem;
 function getRecommendations(product: Product & { category: Category }): string[] {
   try {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `/api/products/search?q=${product.category.name}&limit=3`);
+    xhr.open('GET', `/api/recommendations`, false);
     xhr.send();
     
     if (xhr.status === 200) {
       const data = JSON.parse(xhr.responseText);
-      return data.products.slice(0, 3).map((p: any) => p.name);
+      return data;
     }
   } catch (error) {
     // Silently fail and return fallback
